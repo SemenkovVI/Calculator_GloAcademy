@@ -21,6 +21,11 @@ const endButton = document.querySelector('.end-button');
 const total = document.querySelector('.total'); 
 const fastRange = document.querySelector('.fast-range');
 const totalPriceSum = document.querySelector('.total_price__sum');
+const buttonAdapt = document.querySelector('#adapt');
+const buttonMobileTemplates = document.querySelector('#mobileTemplates');
+
+buttonMobileTemplates.disabled = true;
+
 
 function showElem(elem){
     elem.style.display = 'block';
@@ -29,12 +34,28 @@ function showElem(elem){
 function hideElem(elem){
     elem.style.display = 'none';
 }
-
+function disableButton(){
+    //buttonMobileTemplates.disabled = true;
+console.log(buttonAdapt.checked);
+   /* if(buttonAdapt.checked){
+        buttonMobileTemplates.disabled = false;
+    } else {
+        buttonMobileTemplates.disabled = true;
+        buttonMobileTemplates.checked = false;
+    }*/
+}
 function priceCalculation(elem){
     let result = 0;
     let index = 0; 
     let options = [];
     
+    if(buttonAdapt.checked){
+        buttonMobileTemplates.disabled = false;
+    } else {
+        buttonMobileTemplates.disabled = true;
+        buttonMobileTemplates.checked = false;
+    }
+
 
     if(elem.name ==='whichSite'){
         for(const item of formCalculate.elements){
@@ -66,7 +87,7 @@ function priceCalculation(elem){
                 result += DATA[key][index];
             }
         }
-    })
+    });
 
 
 
@@ -100,6 +121,6 @@ endButton.addEventListener('click', function(){
 
    showElem(total);
 });
-
 formCalculate.addEventListener('change', handlerCallBackForm);
-console.dir(document.querySelector('#adapt'));
+console.dir(buttonAdapt);
+disableButton();
