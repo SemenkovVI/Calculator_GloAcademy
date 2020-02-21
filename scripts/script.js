@@ -105,7 +105,7 @@ function priceCalculation(elem){
            minDeadlineDay = DATA.deadlineDays[index][0];
         } else if (item.classList.contains('calc-handler') && item.checked){
             options.push(item.value)
-        } else if(item.classList.contains('wanr-faster') && item.checked){
+        } else if(item.classList.contains('want-faster') && item.checked){
             const overDay = maxDeadlineDay - rangeDeadline.value;
             overPercent =  overDay * (DATA.deadlinePercent[index] / 100);
         }
