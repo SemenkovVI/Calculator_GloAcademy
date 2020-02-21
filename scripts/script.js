@@ -25,6 +25,12 @@ const fastRange = document.querySelector('.fast-range');
 const totalPriceSum = document.querySelector('.total_price__sum');
 const buttonAdapt = document.querySelector('#adapt');
 const buttonMobileTemplates = document.querySelector('#mobileTemplates');
+const buttonDesktopTemplates = document.querySelector('#desktopTemplates');
+const buttonEditable = document.querySelector('#editable');
+const adaptValue = document.querySelector('.adapt_value');
+const mobileTemplatesValue = document.querySelector('.mobileTemplates_value');
+const desktopTemplatesValue = document.querySelector('.desktopTemplates_value');
+const editableValue = document.querySelector('.editable_value');
 const typeSite = document.querySelector('.type-site');
 const maxDeadline = document.querySelector('.max-deadline');
 const rangeDeadline = document.querySelector('.range-deadline');
@@ -65,6 +71,7 @@ function priceCalculation(elem){
     let site = '';
     let maxDeadlineDay = DATA.deadlineDays[index][1];
     let minDeadlineDay = DATA.deadlineDays[index][0];
+    let overPercent = 0;
     
     if(buttonAdapt.checked){
         buttonMobileTemplates.disabled = false;
@@ -72,6 +79,13 @@ function priceCalculation(elem){
         buttonMobileTemplates.disabled = true;
         buttonMobileTemplates.checked = false;
     }
+
+
+    adaptValue.textContent = buttonAdapt.checked ? 'Да' : 'Нет';
+    mobileTemplatesValue.textContent = buttonMobileTemplates.checked ? 'Да' : 'Нет'; 
+    editableValue.textContent = buttonEditable.checked ? 'Да' : 'Нет'; 
+    desktopTemplatesValue.textContent = buttonDesktopTemplates.checked ? 'Да' : 'Нет'; 
+    
 
 
     if(elem.name ==='whichSite'){
@@ -89,9 +103,16 @@ function priceCalculation(elem){
            site = item.dataset.site;
            maxDeadlineDay = DATA.deadlineDays[index][1];
            minDeadlineDay = DATA.deadlineDays[index][0];
-        } else if (item.classList.contains('calc-handler') && item.checked)
+        } else if (item.classList.contains('calc-handler') && item.checked){
             options.push(item.value)
+        } else if(item.classList.contains('wanr-faster') && item.checked){
+            const overDay = maxDeadlineDay - rangeDeadline.value;
+            overPercent =  overDay * (DATA.deadlinePercent[index] / 100);
+        }
+
     }
+
+    result += DATA.price[index];
 
     options.forEach(function(key){
         if(typeof(DATA[key]) === 'number'){
@@ -110,10 +131,10 @@ function priceCalculation(elem){
     });
 
 
+    result += result * overPercent;
+    
 
-    result += DATA.price[index];
-
-renderTextContent(result, site, maxDeadlineDay, minDeadlineDay);
+    renderTextContent(result, site, maxDeadlineDay, minDeadlineDay);
 
 }
 
@@ -123,10 +144,14 @@ function handlerCallBackForm(event){
     if(target.classList.contains('want-faster')){
         
         target.checked ? showElem(fastRange) : hideElem(fastRange);
+        priceCalculation(target);
     }
+
     if(target.classList.contains('calc-handler')){
         priceCalculation(target);
     }
+
+
 }
 
 startButton.addEventListener('click', function(){
